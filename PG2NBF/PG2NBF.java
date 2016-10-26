@@ -20,6 +20,8 @@ import java.util.Arrays;
 
 
 public class PG2NBF {
+    private static String newline = System.getProperty("line.separator");
+
 
     static String readFile(String path) {
         try {
@@ -33,7 +35,8 @@ public class PG2NBF {
 
     static boolean writeFile(String path, String content) {
         Path file = Paths.get(path);
-        List<String> lines = Arrays.asList(content.split("\\r?\\n"));
+        List<String> lines = Arrays.asList(content.split(newline));
+
         try {
             Files.write(file, lines, Charset.forName("UTF-8"));
             return true;
@@ -43,17 +46,17 @@ public class PG2NBF {
        }
     }
 
-    public static String handlePages(String[] frameStrings, int frames) {
-        String out = "LRU algorithm with " + frames + " frames: \n\n";
+    public static String runLRUForFrames(String[] frameStrings, int frames) {
+        String out = "LRU algorithm with " + frames + " frames: " + newline + newline;
         LRU lru = new LRU(frames);
 
         for (int i = 0; i < frameStrings.length; i++) {
             int page = Integer.parseInt(frameStrings[i]);
             lru.addPage(page);
-            out += lru + "\n";
+            out += lru + newline;
         }
 
-        out += "\nTotal number of page faults is " + lru.getPageFaults();
+        out += newline + "Total number of page faults is " + lru.getPageFaults();
 
         return out;
     }
@@ -64,11 +67,10 @@ public class PG2NBF {
         if (pageRef != null) {
             String[] splited = pageRef.split("\\s+");
 
-            String out3Frames = handlePages(splited, 3);
-            String out4Frames = handlePages(splited, 4);
+            String out3Frames = runLRUForFrames(splited, 3);
+            String out4Frames = runLRUForFrames(splited, 4);
 
-            writeFile("outPage3Frames.txt", out3Frames);
-            writeFile("outPage4Frames.txt", out4Frames);
+            writeFile("pg2out.txt", out3Frames + newline + newline + out4Frames);
 
             System.out.println(out3Frames);
             System.out.println(out4Frames);

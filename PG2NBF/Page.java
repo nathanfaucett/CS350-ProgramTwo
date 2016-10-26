@@ -10,6 +10,7 @@
     private int id;
     private long timestamp;
 
+
     public Page(int id) {
         this.id = id;
         this.timestamp = System.nanoTime();

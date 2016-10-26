@@ -11,6 +11,7 @@ public class LRU {
     private Page[] pages;
     private int currentPageCount;
     private int pageFaults = 0;
+    
 
     public LRU(int maxPageCount) {
         this.maxPageCount = maxPageCount;
